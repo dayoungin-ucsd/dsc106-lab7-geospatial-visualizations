@@ -33,3 +33,7 @@ em {
     color: gray;
     font-style: italic;
 }
+
+#time-slider {
+    width: 300px;
+}
