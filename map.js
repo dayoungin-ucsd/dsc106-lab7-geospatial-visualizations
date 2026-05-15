@@ -41,7 +41,7 @@ map.on('load', async () => {
 
     map.addSource('cambridge_route', {
         type: 'geojson',
-        data: 'CAMBRIDGE_GEOJSON_LINK',
+        data: 'https://raw.githubusercontent.com/cambridgegis/cambridgegis_data/main/Recreation/Bike_Facilities/RECREATION_BikeFacilities.geojson',
     });
 
     map.addLayer({
@@ -64,17 +64,51 @@ map.on('load', async () => {
         let stations = jsonData.data.stations;
         console.log('Stations Array:', stations);
 
+        const tripsUrl = 'https://dsc106.com/labs/lab07/data/bluebikes-traffic-2024-03.csv';
+        const trips = await d3.csv(tripsUrl);
+        console.log('Trips:', trips);
+
+        const departures = d3.rollup(
+            trips,
+            (v) => v.length,
+            (d) => d.start_station_id,
+        );
+
+        const arrivals = d3.rollup(
+            trips,
+            (v) => v.length,
+            (d) => d.end_station_id,
+        );
+
+        stations = stations.map((station) => {
+            let id = station.short_name;
+            station.arrivals = arrivals.get(id) ?? 0;
+            station.departures = departures.get(id) ?? 0;
+            station.totalTraffic =
+                station.arrivals + station.departures;
+            return station;
+        });
+
+        const radiusScale = d3
+            .scaleSqrt()
+            .domain([0, d3.max(stations, (d) => d.totalTraffic)])
+            .range([0, 25]);
+
         // Append circles to the SVG for each station
         const circles = svg
             .selectAll('circle')
             .data(stations)
             .enter()
             .append('circle')
-            .attr('r', 5) // Radius of the circle
-            .attr('fill', 'steelblue') // Circle fill color
-            .attr('stroke', 'white') // Circle border color
-            .attr('stroke-width', 1) // Circle border thickness
-            .attr('opacity', 0.8); // Circle opacity
+            .attr('r', (d) => radiusScale(d.totalTraffic)) // Radius of the circle
+            .each(function (d) {
+                // Add <title> for browser tooltips
+                d3.select(this)
+                .append('title')
+                .text(
+                    `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`,
+                );
+            });
 
         // Function to update circle positions when the map moves/zooms
         function updatePositions() {
@@ -84,7 +118,7 @@ map.on('load', async () => {
         }
 
         // Initial position update when map loads
-        // updatePositions();
+        updatePositions();
 
         map.on('move', updatePositions); // Update during map movement
         map.on('zoom', updatePositions); // Update during zooming
