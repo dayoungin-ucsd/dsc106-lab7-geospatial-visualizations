@@ -84,13 +84,13 @@ map.on('load', async () => {
         }
 
         // Initial position update when map loads
-        updatePositions();
+        // updatePositions();
+
+        map.on('move', updatePositions); // Update during map movement
+        map.on('zoom', updatePositions); // Update during zooming
+        map.on('resize', updatePositions); // Update on window resize
+        map.on('moveend', updatePositions); // Final adjustment after movement ends
     } catch (error) {
         console.error('Error loading JSON:', error); // Handle errors
     }
-
-    map.on('move', updatePositions); // Update during map movement
-    map.on('zoom', updatePositions); // Update during zooming
-    map.on('resize', updatePositions); // Update on window resize
-    map.on('moveend', updatePositions); // Final adjustment after movement ends
 });
