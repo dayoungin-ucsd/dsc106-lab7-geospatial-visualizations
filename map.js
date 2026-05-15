@@ -180,9 +180,9 @@ map.on('load', async () => {
         map.on('resize', updatePositions); // Update on window resize
         map.on('moveend', updatePositions); // Final adjustment after movement ends
 
-        const timeSlider = document.getElementById('#time-slider');
-        const selectedTime = document.getElementById('#selected-time');
-        const anyTimeLabel = document.getElementById('#any-time');
+        const timeSlider = document.getElementById('time-slider');
+        const selectedTime = document.getElementById('selected-time');
+        const anyTimeLabel = document.getElementById('any-time');
 
         let timeFilter = -1;
 
