@@ -109,8 +109,6 @@ map.on('load', async () => {
         // Await JSON fetch
         const jsonData = await d3.json(jsonurl);
         console.log('Loaded JSON Data:', jsonData); // Log to verify structure
-        const stations = computeStationTraffic(jsonData.data.stations, trips);
-        console.log('Stations Array:', stations);
 
         const tripsUrl = 'https://dsc106.com/labs/lab07/data/bluebikes-traffic-2024-03.csv';
         let trips = await d3.csv(
@@ -123,6 +121,9 @@ map.on('load', async () => {
         );
         console.log('Trips:', trips);
 
+        const stations = computeStationTraffic(jsonData.data.stations, trips);
+        console.log('Stations Array:', stations);
+        
         // const departures = d3.rollup(
         //     trips,
         //     (v) => v.length,
