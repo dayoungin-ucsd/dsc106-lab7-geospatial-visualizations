@@ -52,6 +52,11 @@ function minutesSinceMidnight(date) {
     return date.getHours() * 60 + date.getMinutes();
 }
 
+function formatTime(minutes) {
+  const date = new Date(0, 0, 0, 0, minutes); // Set hours & minutes
+  return date.toLocaleString('en-US', { timeStyle: 'short' }); // Format as HH:MM AM/PM
+}
+
 function filterTripsbyTime(trips, timeFilter) {
     return timeFilter === -1
         ? trips // If no filter is applied (-1), return all trips
@@ -123,7 +128,7 @@ map.on('load', async () => {
 
         const stations = computeStationTraffic(jsonData.data.stations, trips);
         console.log('Stations Array:', stations);
-        
+
         // const departures = d3.rollup(
         //     trips,
         //     (v) => v.length,
