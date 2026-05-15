@@ -225,7 +225,7 @@ map.on('load', async () => {
             circles
                 .data(filteredStations, (d) => d.short_name) // Ensure D3 tracks elements correctly
                 .join('circle') // Ensure the data is bound correctly
-                .attr('r', (d) => radiusScale(d.totalTraffic)); // Update circle sizes
+                .attr('r', (d) => radiusScale(d.totalTraffic)) // Update circle sizes
                 .style('--departure-ratio', (d) =>
                     stationFlow(d.departures / d.totalTraffic),
                 );
