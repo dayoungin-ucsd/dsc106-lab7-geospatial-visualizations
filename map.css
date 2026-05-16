@@ -46,13 +46,32 @@ body {
 
 .legend {
     display: flex;
-    margin-block: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-block: 1rem;
+}
+
+.legend::before {
+    content: "LEGEND:";
+    font-weight: bold;
+    color: gray;
+    font-size: 0.85rem;
 }
 
 .legend > div {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: black;
+    background: none;
+    padding: 0;
+}
+
+.legend > div::before {
+    content: "";
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
     background: var(--color);
 }
