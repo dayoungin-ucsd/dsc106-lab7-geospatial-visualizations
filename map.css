@@ -25,16 +25,34 @@ body {
 }
 
 #map svg circle {
-    --color-departures: steelblue;
-    --color-arrivals: darkorange;
-    --color: color-mix(
-        in oklch,
-        var(--color-departures) calc(100% * var(--departure-ratio)),
-        var(--color-arrivals)
-    );
     fill: var(--color);
     fill-opacity: 0.6;
     stroke: white;
     stroke-width: 1;
     pointer-events: auto;
+}
+
+#map svg circle,
+.legend > div {
+    --color-departures: steelblue;
+    --color-arrivals: darkorange;
+
+    --color: color-mix(
+        in oklch,
+        var(--color-departures) calc(100% * var(--departure-ratio)),
+        var(--color-arrivals)
+    );
+}
+
+.legend {
+    display: flex;
+    margin-block: 10px;
+}
+
+.legend > div {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    background: var(--color);
 }
